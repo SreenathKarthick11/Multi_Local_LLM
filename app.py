@@ -1,29 +1,43 @@
+from typing import TypedDict
 from langchain_ollama import ChatOllama
-from langchain_core.messages import SystemMessage, HumanMessage
+from langgraph.graph import StateGraph,START, END
+
+
+class DebateState(TypedDict):
+    question: str
+    answer: str
+
 
 llm = ChatOllama(
     model="qwen2.5:3b",
     temperature=0.7
 )
 
-test_questions=[
-    "What is the capital of France?",
-    "Who discovered penicillin?",
-    "What is the largest planet in our solar system?",
-    "When was IIT Palakkad established?"
-    ]
+
+def answer_node(state: DebateState) -> DebateState:
+    response = llm.invoke(state["question"])
+    state["answer"] = response.content
+
+    return state
 
 
-for q in test_questions:
-    print(f"\nQuestion: {q}")
+graph_builder = StateGraph(DebateState)
 
-    response = llm.invoke([
-        SystemMessage(
-            content="You are a careful fact-checking assistant. If unsure, say you are unsure."
-        ),
-        HumanMessage(content=q)
-    ])
+graph_builder.add_node("answer_node",answer_node)
 
-    print("\nAnswer:")
-    print(response.content)
+graph_builder.add_edge(START,"answer_node")
 
+graph_builder.add_edge("answer_node",END)
+
+graph = graph_builder.compile()
+
+
+result = graph.invoke(
+    {
+        "question": "What is the capital of France?"
+    }
+)
+
+print(result)
+
+print(graph.get_graph().draw_ascii())
