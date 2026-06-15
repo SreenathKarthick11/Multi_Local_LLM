@@ -1,4 +1,4 @@
-from llm import llm
+from llm import structured_llm
 from state import DebateState
 
 def debater_a(state: DebateState):
@@ -11,6 +11,6 @@ def debater_a(state: DebateState):
                 {state['question']}
             """
 
-    response = llm.invoke(prompt)
-    
-    return { "answer_a": response.content}
+    response = structured_llm.invoke(prompt)
+
+    return { "answer_a": response }
