@@ -1,9 +1,10 @@
 from graph import graph
+from pprint import pprint
 
 initial_state = {
     "question": input("Question: "),
-    "answer_a": "",
-    "answer_b": "",
+    "answer_a": None,
+    "answer_b": None,
     "final_answer": ""
 }
 
@@ -12,5 +13,4 @@ initial_state = {
 
 result = graph.invoke(initial_state)
 print("\n===== FINAL STATE =====\n")
-
-print(result)
+pprint(result)
