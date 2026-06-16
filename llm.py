@@ -3,7 +3,7 @@ from models import AgentResponse
 
 llm = ChatOllama(
     model="qwen2.5:3b",
-    base_url="http://localhost:11434",
+    base_url="https://unsaid-joylessly-remake.ngrok-free.dev",
     temperature=0.7
 )
 
