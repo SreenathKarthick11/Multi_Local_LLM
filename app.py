@@ -3,8 +3,16 @@ from pprint import pprint
 
 initial_state = {
     "question": input("Question: "),
+
     "answer_a": None,
     "answer_b": None,
+
+    "critique_a": "",
+    "critique_b": "",
+
+    "revised_answer_a": None,
+    "revised_answer_b": None,
+
     "final_answer": ""
 }
 
