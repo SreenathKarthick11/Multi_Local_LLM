@@ -1,4 +1,4 @@
-from llm import structured_llm,llm
+from llm import structured_llm,critique_llm
 from state import DebateState
 
 def debater_a(state: DebateState):
@@ -38,12 +38,14 @@ def critique_a(state: DebateState):
             - factual errors
             - unsupported claims
             - weak reasoning
+
+            Return concise issues.
             """
 
-    response = llm.invoke(prompt)
+    response = critique_llm.invoke(prompt)
 
     return {
-        "critique_a": response.content
+        "critique_a": response
     }
 
 def revise_a(state:DebateState):
@@ -55,7 +57,7 @@ def revise_a(state:DebateState):
         {state["answer_a"].answer}
 
         Opponent Critique:
-        {state["critique_b"]}
+        - {"\n- ".join(state["critique_b"].issues)}
 
         Revise your answer if necessary.
 

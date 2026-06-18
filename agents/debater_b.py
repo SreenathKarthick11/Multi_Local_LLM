@@ -1,4 +1,4 @@
-from llm import structured_llm,llm
+from llm import structured_llm,critique_llm
 from state import DebateState
 
 def debater_b(state: DebateState) -> DebateState:
@@ -34,10 +34,10 @@ def critique_b(state: DebateState):
             Find weaknesses in the opponent's answer.
             """
 
-    response = llm.invoke(prompt)
+    response = critique_llm.invoke(prompt)
 
     return {
-        "critique_b": response.content
+        "critique_b": response
     }
 
 def revise_b(state:DebateState):
@@ -49,7 +49,7 @@ def revise_b(state:DebateState):
         {state["answer_b"].answer}
 
         Opponent Critique:
-        {state["critique_a"]}
+        - {"\n- ".join(state["critique_a"].issues)}
 
         Revise your answer if necessary.
 
