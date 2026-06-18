@@ -1,33 +1,31 @@
 from llm import llm
 from state import DebateState
 
-def judge(state:DebateState) -> DebateState:
+def judge(state:DebateState):
 
     prompt = f"""
-            Question:
-            {state["question"]}
+        Question:
+        {state["question"]}
 
-            Answer A:
-            {state["answer_a"].answer}
+        Answer A:
+        {state["revised_answer_a"].answer}
 
-            Confidence A:
-            {state["answer_a"].confidence}
+        Reasoning A:
+        {state["revised_answer_a"].reasoning}
 
-            Reasoning A:
-            {state["answer_a"].reasoning}
+        Answer B:
+        {state["revised_answer_b"].answer}
 
-            Answer B:
-            {state["answer_b"].answer}
+        Reasoning B:
+        {state["revised_answer_b"].reasoning}
 
-            Confidence B:
-            {state["answer_b"].confidence}
+        Choose the better answer.
 
-            Reasoning B:
-            {state["answer_b"].reasoning}
-
-            Choose the better answer.
-            """
+        Explain why.
+        """
 
     response = llm.invoke(prompt)
 
-    return { "final_answer": response.content }
+    return {
+        "final_answer": response.content
+    }

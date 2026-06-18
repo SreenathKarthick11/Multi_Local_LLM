@@ -1,4 +1,4 @@
-from llm import structured_llm
+from llm import structured_llm,llm
 from state import DebateState
 
 def debater_a(state: DebateState):
@@ -14,3 +14,59 @@ def debater_a(state: DebateState):
     response = structured_llm.invoke(prompt)
 
     return { "answer_a": response }
+
+def critique_a(state: DebateState):
+
+    prompt = f"""
+            You are Debater A.
+
+            Question:
+            {state["question"]}
+
+            Your Answer:
+            {state["answer_a"].answer}
+
+            Opponent Answer:
+            {state["answer_b"].answer}
+
+            Opponent Reasoning:
+            {state["answer_b"].reasoning}
+
+            Find weaknesses in the opponent's answer.
+
+            Focus on:
+            - factual errors
+            - unsupported claims
+            - weak reasoning
+            """
+
+    response = llm.invoke(prompt)
+
+    return {
+        "critique_a": response.content
+    }
+
+def revise_a(state:DebateState):
+
+    prompt = f"""
+        You are Debater A.
+
+        Original Answer:
+        {state["answer_a"].answer}
+
+        Opponent Critique:
+        {state["critique_b"]}
+
+        Revise your answer if necessary.
+
+        Return:
+        - answer
+        - confidence
+        - reasoning
+        """
+
+    response = structured_llm.invoke(prompt)
+
+    return {
+        "revised_answer_a": response
+    }
