@@ -9,3 +9,8 @@ class AgentResponse(BaseModel):
     reasoning: str = Field(
         description="Reasoning used to reach the answer"
     )
+
+class CritiqueResponse(BaseModel):
+    issues: list[str] = Field(
+        description="List of weaknesses found in the answer"
+    )
