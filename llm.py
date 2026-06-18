@@ -1,5 +1,5 @@
 from langchain_ollama import ChatOllama
-from models import AgentResponse
+from models import AgentResponse,CritiqueResponse
 
 llm = ChatOllama(
     model="qwen2.5:3b",
@@ -8,3 +8,5 @@ llm = ChatOllama(
 )
 
 structured_llm = llm.with_structured_output(AgentResponse)
+
+critique_llm = llm.with_structured_output(CritiqueResponse)
