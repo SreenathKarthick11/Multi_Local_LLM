@@ -6,6 +6,9 @@ from models import AgentResponse, CritiqueResponse
 class DebateState(TypedDict):
     question: str
 
+    evidence_a: str
+    evidence_b: str
+
     answer_a: AgentResponse | None
     answer_b: AgentResponse | None
 
