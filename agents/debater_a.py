@@ -1,19 +1,36 @@
 from llm import debate_llm,critique_llm
 from state import DebateState
+from tools.search import search_web
 
 def debater_a(state: DebateState):
 
-    prompt = f"""
-                You are Debater A.
-                Answer the question carefully.
+    evidence = search_web(
+        state["question"]
+    )
 
-                Question:
-                {state['question']}
-            """
+    prompt = f"""
+        You are Debater A.
+
+        Question:
+        {state["question"]}
+
+        Search Results:
+        {evidence}
+
+        Answer the question using the search results.
+
+        Return:
+        - answer
+        - confidence
+        - reasoning
+        """
 
     response = debate_llm.invoke(prompt)
 
-    return { "answer_a": response }
+    return {
+        "answer_a": response,
+        "evidence_a": evidence
+    }
 
 def critique_a(state: DebateState):
 
@@ -22,6 +39,9 @@ def critique_a(state: DebateState):
 
         Question:
         {state["question"]}
+
+        Your Evidence:
+        {state["evidence_a"]}
 
         Your Answer:
         {state["answer_a"].answer}

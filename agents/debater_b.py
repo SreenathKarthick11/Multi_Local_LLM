@@ -1,18 +1,36 @@
 from llm import debate_llm,critique_llm
 from state import DebateState
+from tools.search import search_web
 
-def debater_b(state: DebateState) -> DebateState:
+def debater_b(state: DebateState):
+
+    evidence = search_web(state["question"]+" different viewpoints",max_results=3)
 
     prompt = f"""
             You are Debater B.
-            Try to consider alternative possibilities.
+
+            Consider alternative interpretations.
+
             Question:
-            {state['question']}
+            {state["question"]}
+
+            Search Results:
+            {evidence}
+
+            Answer the question using the search results.
+
+            Return:
+            - answer
+            - confidence
+            - reasoning
             """
 
     response = debate_llm.invoke(prompt)
 
-    return { "answer_b": response }
+    return {
+        "answer_b": response,
+        "evidence_b": evidence
+    }
 
 def critique_b(state: DebateState):
 
@@ -21,6 +39,9 @@ def critique_b(state: DebateState):
 
             Question:
             {state["question"]}
+
+            Your Evidence:
+            {state['evidence_b']}
 
             Your Answer:
             {state["answer_b"].answer}
