@@ -22,6 +22,7 @@ def judge(state:DebateState):
         Choose the better answer.
 
         Explain why.
+        Be concise.
         """
 
     response = llm.invoke(prompt)

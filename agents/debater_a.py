@@ -18,29 +18,31 @@ def debater_a(state: DebateState):
 def critique_a(state: DebateState):
 
     prompt = f"""
-            You are Debater A.
+        You are Debater A.
 
-            Question:
-            {state["question"]}
+        Question:
+        {state["question"]}
 
-            Your Answer:
-            {state["answer_a"].answer}
+        Your Answer:
+        {state["answer_a"].answer}
 
-            Opponent Answer:
-            {state["answer_b"].answer}
+        Opponent Answer:
+        {state["answer_b"].answer}
 
-            Opponent Reasoning:
-            {state["answer_b"].reasoning}
+        Opponent Reasoning:
+        {state["answer_b"].reasoning}
 
-            Find weaknesses in the opponent's answer.
+        Analyze the opponent's answer.
 
-            Focus on:
-            - factual errors
-            - unsupported claims
-            - weak reasoning
+        Identify:
 
-            Return concise issues.
-            """
+        1. Weaknesses in reasoning.
+        2. Statements that may be hallucinated,
+        fabricated, or unsupported.
+        3. Overall hallucination risk from 1 to 5.
+
+        Be concise.
+        """
 
     response = critique_llm.invoke(prompt)
 
@@ -50,16 +52,29 @@ def critique_a(state: DebateState):
 
 def revise_a(state:DebateState):
 
+    critique=state["critique_b"]
+
     prompt = f"""
         You are Debater A.
 
         Original Answer:
         {state["answer_a"].answer}
 
-        Opponent Critique:
-        - {"\n- ".join(state["critique_b"].issues)}
+        Original Reasoning:
+        {state["answer_a"].reasoning}
+
+        Opponent Weaknesses:
+        {chr(10).join("- " + w for w in critique.weaknesses)}
+
+        Suspected Hallucinations:
+        {chr(10).join("- " + h for h in critique.suspected_hallucinations)}
+
+        Hallucination Risk:
+        {critique.hallucination_risk}/5
 
         Revise your answer if necessary.
+
+        Pay special attention to suspected hallucinations.
 
         Return:
         - answer

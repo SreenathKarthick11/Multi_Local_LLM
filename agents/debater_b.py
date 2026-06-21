@@ -31,7 +31,16 @@ def critique_b(state: DebateState):
             Opponent Reasoning:
             {state["answer_a"].reasoning}
 
-            Find weaknesses in the opponent's answer.
+            Analyze the opponent's answer.
+
+            Identify:
+
+            1. Weaknesses in reasoning.
+            2. Statements that may be hallucinated,
+            fabricated, or unsupported.
+            3. Overall hallucination risk from 1 to 5.
+
+            Be concise.
             """
 
     response = critique_llm.invoke(prompt)
@@ -42,16 +51,29 @@ def critique_b(state: DebateState):
 
 def revise_b(state:DebateState):
 
+    critique=state["critique_a"]
+
     prompt = f"""
         You are Debater B.
 
         Original Answer:
         {state["answer_b"].answer}
 
-        Opponent Critique:
-        - {"\n- ".join(state["critique_a"].issues)}
+        Original Reasoning:
+        {state["answer_b"].reasoning}
+
+        Opponent Weaknesses:
+        {chr(10).join("- " + w for w in critique.weaknesses)}
+
+        Suspected Hallucinations:
+        {chr(10).join("- " + h for h in critique.suspected_hallucinations)}
+
+        Hallucination Risk:
+        {critique.hallucination_risk}/5
 
         Revise your answer if necessary.
+
+        Pay special attention to suspected hallucinations.
 
         Return:
         - answer

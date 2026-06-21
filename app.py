@@ -7,8 +7,8 @@ initial_state = {
     "answer_a": None,
     "answer_b": None,
 
-    "critique_a": "",
-    "critique_b": "",
+    "critique_a": None,
+    "critique_b": None,
 
     "revised_answer_a": None,
     "revised_answer_b": None,
