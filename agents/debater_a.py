@@ -1,4 +1,4 @@
-from llm import structured_llm,critique_llm
+from llm import debate_llm,critique_llm
 from state import DebateState
 
 def debater_a(state: DebateState):
@@ -11,7 +11,7 @@ def debater_a(state: DebateState):
                 {state['question']}
             """
 
-    response = structured_llm.invoke(prompt)
+    response = debate_llm.invoke(prompt)
 
     return { "answer_a": response }
 
@@ -82,7 +82,7 @@ def revise_a(state:DebateState):
         - reasoning
         """
 
-    response = structured_llm.invoke(prompt)
+    response = debate_llm.invoke(prompt)
 
     return {
         "revised_answer_a": response

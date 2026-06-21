@@ -1,12 +1,24 @@
 from langchain_ollama import ChatOllama
-from models import AgentResponse,CritiqueResponse
+from models import AgentResponse, CritiqueResponse
 
-llm = ChatOllama(
+# Base debate model
+debate_base_llm = ChatOllama(
     model="qwen2.5:3b",
-    # base_url="https://unsaid-joylessly-remake.ngrok-free.dev",
-    temperature=0.7
+    temperature=0.7,
 )
 
-structured_llm = llm.with_structured_output(AgentResponse)
+debate_llm = debate_base_llm.with_structured_output(AgentResponse)
 
-critique_llm = llm.with_structured_output(CritiqueResponse)
+# Base critique model
+critique_base_llm = ChatOllama(
+    model="qwen2.5:1.5b",
+    temperature=0.3,
+)
+
+critique_llm = critique_base_llm.with_structured_output(CritiqueResponse)
+
+# Judge remains normal text output
+judge_llm = ChatOllama(
+    model="qwen2.5:3b",
+    temperature=0.2,
+)

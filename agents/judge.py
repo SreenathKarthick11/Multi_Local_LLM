@@ -1,4 +1,4 @@
-from llm import llm
+from llm import judge_llm
 from state import DebateState
 
 def judge(state:DebateState):
@@ -25,7 +25,7 @@ def judge(state:DebateState):
         Be concise.
         """
 
-    response = llm.invoke(prompt)
+    response = judge_llm.invoke(prompt)
 
     return {
         "final_answer": response.content
