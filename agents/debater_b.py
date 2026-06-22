@@ -1,10 +1,12 @@
 from llm import debate_llm,critique_llm
 from state import DebateState
 from tools.search import search_web
+from tools.search_helper import get_evidence
 
 def debater_b(state: DebateState):
 
-    evidence = search_web(state["question"]+" different viewpoints",max_results=3)
+
+    evidence, decision = get_evidence(state["question"]+" different viewpoints")
 
     prompt = f"""
             You are Debater B.
@@ -13,6 +15,9 @@ def debater_b(state: DebateState):
 
             Question:
             {state["question"]}
+
+            Search Used:
+            {decision.need_search}
 
             Search Results:
             {evidence}
