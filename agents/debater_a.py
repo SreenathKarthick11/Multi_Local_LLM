@@ -16,7 +16,7 @@ def debater_a(state: DebateState):
         Search Used:
         {decision.need_search}
 
-        
+
         Search Results:
         {evidence}
 
@@ -31,11 +31,14 @@ def debater_a(state: DebateState):
     response = debate_llm.invoke(prompt)
 
     return {
-        "answer_a": response,
-        "evidence_a": evidence
+        "evidence_a": evidence,
+        "history_a":[response]
     }
 
 def critique_a(state: DebateState):
+
+    my_answer=state["history_a"][-1]
+    opponent_answer=state["history_b"][-1]
 
     prompt = f"""
         You are Debater A.
@@ -47,13 +50,13 @@ def critique_a(state: DebateState):
         {state["evidence_a"]}
 
         Your Answer:
-        {state["answer_a"].answer}
+        {my_answer.answer}
 
         Opponent Answer:
-        {state["answer_b"].answer}
+        {opponent_answer.answer}
 
         Opponent Reasoning:
-        {state["answer_b"].reasoning}
+        {opponent_answer.reasoning}
 
         Analyze the opponent's answer.
 
@@ -76,15 +79,16 @@ def critique_a(state: DebateState):
 def revise_a(state:DebateState):
 
     critique=state["critique_b"]
+    latest=state["history_a"][-1]
 
     prompt = f"""
         You are Debater A.
 
         Original Answer:
-        {state["answer_a"].answer}
+        {latest.answer}
 
         Original Reasoning:
-        {state["answer_a"].reasoning}
+        {latest.reasoning}
 
         Opponent Weaknesses:
         {chr(10).join("- " + w for w in critique.weaknesses)}
@@ -108,5 +112,5 @@ def revise_a(state:DebateState):
     response = debate_llm.invoke(prompt)
 
     return {
-        "revised_answer_a": response
+        "history_a":[response]
     }

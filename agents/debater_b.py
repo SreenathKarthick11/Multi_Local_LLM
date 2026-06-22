@@ -33,11 +33,14 @@ def debater_b(state: DebateState):
     response = debate_llm.invoke(prompt)
 
     return {
-        "answer_b": response,
+        "history_b": [response],
         "evidence_b": evidence
     }
 
 def critique_b(state: DebateState):
+
+    my_answer=state["history_b"][-1]
+    opponent_answer=state["history_a"][-1]
 
     prompt = f"""
             You are Debater B.
@@ -49,13 +52,13 @@ def critique_b(state: DebateState):
             {state['evidence_b']}
 
             Your Answer:
-            {state["answer_b"].answer}
+            {my_answer.answer}
 
             Opponent Answer:
-            {state["answer_a"].answer}
+            {opponent_answer.answer}
 
             Opponent Reasoning:
-            {state["answer_a"].reasoning}
+            {opponent_answer.reasoning}
 
             Analyze the opponent's answer.
 
@@ -78,15 +81,16 @@ def critique_b(state: DebateState):
 def revise_b(state:DebateState):
 
     critique=state["critique_a"]
+    latest=state["history_b"][-1]
 
     prompt = f"""
         You are Debater B.
 
         Original Answer:
-        {state["answer_b"].answer}
+        {latest.answer}
 
         Original Reasoning:
-        {state["answer_b"].reasoning}
+        {latest.reasoning}
 
         Opponent Weaknesses:
         {chr(10).join("- " + w for w in critique.weaknesses)}
@@ -100,7 +104,6 @@ def revise_b(state:DebateState):
         Revise your answer if necessary.
 
         Pay special attention to suspected hallucinations.
-
         Return:
         - answer
         - confidence
@@ -110,5 +113,5 @@ def revise_b(state:DebateState):
     response = debate_llm.invoke(prompt)
 
     return {
-        "revised_answer_b": response
+        "history_b":[response]
     }

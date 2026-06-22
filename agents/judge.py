@@ -3,30 +3,59 @@ from state import DebateState
 
 def judge(state:DebateState):
 
+    answer_a = state["history_a"][-1]
+    answer_b = state["history_b"][-1]
+
+    critique_a = state["critique_a"]
+    critique_b = state["critique_b"]
+
     prompt = f"""
         Question:
         {state["question"]}
 
         Answer A:
-        {state["revised_answer_a"].answer}
+        {answer_a.answer}
+
+        Confidence A:
+        {answer_a.confidence}
 
         Reasoning A:
-        {state["revised_answer_a"].reasoning}
+        {answer_a.reasoning}
+
+        Critique of A:
+        {critique_b.weaknesses}
+
+        Hallucination Risk A:
+        {critique_b.hallucination_risk}/5
 
         Answer B:
-        {state["revised_answer_b"].answer}
+        {answer_b.answer}
+
+        Confidence B:
+        {answer_b.confidence}
 
         Reasoning B:
-        {state["revised_answer_b"].reasoning}
+        {answer_b.reasoning}
+
+        Critique of B:
+        {critique_a.weaknesses}
+
+        Hallucination Risk B:
+        {critique_a.hallucination_risk}/5
 
         Choose the better answer.
 
-        Explain why.
-        Be concise.
+        Prioritize:
+        1. Correctness
+        2. Evidence support
+        3. Lower hallucination risk
+        4. Strong reasoning
+
+        Explain briefly.
         """
 
     response = judge_llm.invoke(prompt)
 
     return {
-        "final_answer": response.content
+        "final_answer": response
     }
