@@ -15,3 +15,8 @@ class SearchDecision(BaseModel):
     need_search: bool = Field(description="Whether a search is needed")
     search_query: str = Field(description="The query to use for searching")
     reason: str = Field(description="The reason for the search decision")
+
+class JudgeResponse(BaseModel):
+    winner: str = Field(description="The winner of the debate, either 'A' or 'B'")
+    confidence: float = Field(description="Confidence score between 0 and 1")
+    reasoning: str = Field(description="Reasoning used to reach the judgment")
