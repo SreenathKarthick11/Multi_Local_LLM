@@ -10,3 +10,8 @@ class CritiqueResponse(BaseModel):
     weaknesses: list[str] = Field(description="Weaknesses in the opponent answer")
     hallucination_risk: int = Field(description="Risk score from 1 to 5")
     suspected_hallucinations: list[str] = Field(description="Statements that may be fabricated or unsupported")
+
+class SearchDecision(BaseModel):
+    need_search: bool = Field(description="Whether a search is needed")
+    search_query: str = Field(description="The query to use for searching")
+    reason: str = Field(description="The reason for the search decision")
