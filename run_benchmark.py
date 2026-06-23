@@ -1,4 +1,4 @@
-from evaluation.evaluator import run_dataset
+from evaluation.evaluate import run_dataset
 
 datasets = [
     "evaluation/dataset/factual.json",
