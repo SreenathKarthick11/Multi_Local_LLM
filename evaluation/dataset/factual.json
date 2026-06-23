@@ -1,0 +1,42 @@
+[
+  {
+    "question": "What is the capital of Germany?",
+    "answer": "Berlin"
+  },
+  {
+    "question": "Which planet is the largest in the Solar System?",
+    "answer": "Jupiter"
+  },
+  {
+    "question": "Who developed the theory of relativity?",
+    "answer": "Albert Einstein"
+  },
+  {
+    "question": "What is the chemical symbol for gold?",
+    "answer": "Au"
+  },
+  {
+    "question": "What is the capital of Japan?",
+    "answer": "Tokyo"
+  },
+  {
+    "question": "How many continents are there on Earth?",
+    "answer": "7"
+  },
+  {
+    "question": "What is the tallest mountain in the world?",
+    "answer": "Mount Everest"
+  },
+  {
+    "question": "Which ocean is the largest?",
+    "answer": "Pacific Ocean"
+  },
+  {
+    "question": "Who wrote Hamlet?",
+    "answer": "William Shakespeare"
+  },
+  {
+    "question": "What is the speed of light in vacuum?",
+    "answer": "299792458 m/s"
+  }
+]

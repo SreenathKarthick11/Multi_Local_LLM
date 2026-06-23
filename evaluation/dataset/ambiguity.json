@@ -1,0 +1,22 @@
+[
+  {
+    "question": "What is a point?",
+    "answer": "Depends on context; commonly a location with no dimensions in geometry."
+  },
+  {
+    "question": "What is a bank?",
+    "answer": "Can refer to a financial institution or the side of a river."
+  },
+  {
+    "question": "What is Python?",
+    "answer": "Can refer to a programming language or a snake."
+  },
+  {
+    "question": "When a fisherman goes to a bank, what does he see?",
+    "answer": "Ambiguous; could refer to a river bank or financial bank."
+  },
+  {
+    "question": "What is an agent?",
+    "answer": "Depends on context such as AI, software, business, or law."
+  }
+]

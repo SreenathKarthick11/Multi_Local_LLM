@@ -1,0 +1,22 @@
+[
+  {
+    "question": "If a train travels 60 km in 1 hour, how far will it travel in 3 hours?",
+    "answer": "180 km"
+  },
+  {
+    "question": "A farmer has 15 sheep and all but 8 die. How many are left?",
+    "answer": "8"
+  },
+  {
+    "question": "If all roses are flowers and some flowers fade quickly, can we conclude all roses fade quickly?",
+    "answer": "No"
+  },
+  {
+    "question": "What comes next in the sequence: 2, 4, 8, 16?",
+    "answer": "32"
+  },
+  {
+    "question": "A rectangle has length 8 and width 5. What is its area?",
+    "answer": "40"
+  }
+]
