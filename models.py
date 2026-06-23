@@ -20,3 +20,8 @@ class JudgeResponse(BaseModel):
     winner: str = Field(description="The winner of the debate, either 'A' or 'B'")
     confidence: float = Field(description="Confidence score between 0 and 1")
     reasoning: str = Field(description="Reasoning used to reach the judgment")
+
+class EvaluationResponse(BaseModel):
+    correct: bool = Field(description="Whether the final answer is correct")
+    score: int = Field(description="Quality score from 1-10")
+    reasoning: str = Field(description="Reasoning for the evaluation")
