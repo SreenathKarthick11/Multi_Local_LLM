@@ -57,5 +57,5 @@ def judge(state:DebateState):
     response = judge_llm.invoke(prompt)
 
     return {
-        "final_answer": response
+        "judge_result": response
     }

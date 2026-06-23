@@ -1,6 +1,6 @@
 from operator import add
 from typing import TypedDict,Annotated
-from models import AgentResponse, CritiqueResponse
+from models import AgentResponse, CritiqueResponse,JudgeResponse
 
 
 class DebateState(TypedDict):
@@ -18,4 +18,4 @@ class DebateState(TypedDict):
     history_a: Annotated[list[AgentResponse],add]
     history_b: Annotated[list[AgentResponse],add]
 
-    final_answer: str
+    judge_result: JudgeResponse | None
