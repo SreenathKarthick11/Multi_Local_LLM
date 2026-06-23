@@ -1,41 +1,59 @@
-from llm import structured_llm
+import json
 from graph import graph
+import pandas as pd
 
-def single_agent_answer(question):
+def run_dataset(path):
 
-    prompt = f"""
-    Answer the question.
+    with open(path) as f:
+        dataset = json.load(f)
 
-    Question:
-    {question}
-    """
+    results = []
 
-    return structured_llm.invoke(prompt)
+    for sample in dataset:
 
-def debate_answer(question):
+        print(f"Running: {sample['question']}")
 
-    initial_state = {
-        "question": question,
+        state = {
+            "question": sample["question"],
+            "round_number": 1,
+            "max_rounds": 3,
 
-        "answer_a": None,
-        "answer_b": None,
+            "history_a": [],
+            "history_b": [],
 
-        "critique_a": None,
-        "critique_b": None,
+            "evidence_a": "",
+            "evidence_b": "",
 
-        "revised_answer_a": None,
-        "revised_answer_b": None,
+            "critique_a": None,
+            "critique_b": None,
 
-        "final_answer": ""
-    }
+            "final_answer": None,
+            "judge_result": None,
+        }
 
-    result = graph.invoke(initial_state)
+        result = graph.invoke(state)
 
-    return result["final_answer"]
+        results.append({
+            "question": sample["question"],
+            "expected": sample["answer"],
+            "winner": result["judge_result"].winner,
+            "judge_reasoning": result["judge_result"].reasoning,
+            "answer_a": result["history_a"][-1].answer,
+            "answer_b": result["history_b"][-1].answer,
+        })
 
-def is_correct(prediction, ground_truth):
+    df = pd.DataFrame(results)
 
-    prediction = prediction.lower()
-    ground_truth = ground_truth.lower()
+    output_file = (
+        path.split("/")[-1]
+        .replace(".json", "_results.csv")
+    )
 
-    return ground_truth in prediction
+    df.to_csv(
+        f"evaluation/results/{output_file}",
+        index=False
+    )
+
+    return results
+
+
