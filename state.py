@@ -1,4 +1,4 @@
-from operator import add
+from operator import add,or_
 from typing import TypedDict,Annotated
 from models import AgentResponse, CritiqueResponse,JudgeResponse
 
@@ -8,6 +8,9 @@ class DebateState(TypedDict):
 
     round_number: int
     max_rounds: int
+
+    search_used_a: Annotated[bool,or_]
+    search_used_b: Annotated[bool,or_]
 
     evidence_a: str
     evidence_b: str
