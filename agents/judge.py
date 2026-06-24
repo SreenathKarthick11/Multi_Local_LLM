@@ -49,6 +49,12 @@ def judge(state:DebateState):
         Hallucination Risk B:
         {critique_a.hallucination_risk}/5
 
+        Evidence Collected By A:
+        {chr(10).join(state["evidence_bank_a"])}
+
+        Evidence Collected By B:
+        {chr(10).join(state["evidence_bank_b"])}
+
         Choose the better answer.
 
         Prioritize:

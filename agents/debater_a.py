@@ -31,7 +31,7 @@ def debater_a(state: DebateState):
     response = debate_llm.invoke(prompt)
 
     return {
-        "evidence_a": evidence,
+        "evidence_bank_a": [evidence],
         "search_used_a": decision.need_search,
         "history_a":[response]
     }
@@ -47,8 +47,8 @@ def critique_a(state: DebateState):
         Question:
         {state["question"]}
 
-        Your Evidence:
-        {state["evidence_a"]}
+        Your Recent Evidence:
+        {state["evidence_bank_a"][-1]}
 
         Your Answer:
         {my_answer.answer}

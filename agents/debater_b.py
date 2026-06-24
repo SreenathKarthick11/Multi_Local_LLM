@@ -35,7 +35,7 @@ def debater_b(state: DebateState):
     return {
         "history_b": [response],
         "search_used_a": decision.need_search,
-        "evidence_b": evidence
+        "evidence_bank_b": [evidence]
     }
 
 def critique_b(state: DebateState):
@@ -49,8 +49,8 @@ def critique_b(state: DebateState):
             Question:
             {state["question"]}
 
-            Your Evidence:
-            {state['evidence_b']}
+            Your Recent Evidence:
+            {state["evidence_bank_b"][-1]}
 
             Your Answer:
             {my_answer.answer}

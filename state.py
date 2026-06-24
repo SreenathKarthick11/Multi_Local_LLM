@@ -12,8 +12,8 @@ class DebateState(TypedDict):
     search_used_a: Annotated[bool,or_]
     search_used_b: Annotated[bool,or_]
 
-    evidence_a: str
-    evidence_b: str
+    evidence_bank_a: Annotated[list[str], add]
+    evidence_bank_b: Annotated[list[str], add]
 
     critique_a: CritiqueResponse | None
     critique_b: CritiqueResponse | None
