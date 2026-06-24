@@ -49,6 +49,8 @@ def run_dataset(path):
 
         results.append({
             "question": sample["question"],
+            "search_used_a": result["search_used_a"],
+            "search_used_b": result["search_used_b"],
             "expected": sample["answer"],
 
             "winner": winner,

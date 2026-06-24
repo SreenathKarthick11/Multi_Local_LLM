@@ -1,10 +1,10 @@
 # tools/search_helper.py
-from llm import search_decision_llm
+from llm import search_llm
 from tools.search import search_web
 
 def get_evidence(question: str):
 
-    decision = search_decision_llm.invoke(
+    decision = search_llm.invoke(
         f"""
         Question:
         {question}

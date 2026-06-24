@@ -7,6 +7,9 @@ initial_state = {
     "round_number": 1,
     "max_rounds": 3,
 
+    "search_used_a": False,
+    "search_used_b": False,
+
     "evidence_a": "",
     "evidence_b": "",
 
