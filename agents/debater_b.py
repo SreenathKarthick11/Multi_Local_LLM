@@ -34,6 +34,7 @@ def debater_b(state: DebateState):
 
     return {
         "history_b": [response],
+        "search_used_a": decision.need_search,
         "evidence_b": evidence
     }
 

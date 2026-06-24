@@ -13,6 +13,9 @@ def judge(state:DebateState):
         Question:
         {state["question"]}
 
+        Search Used A:
+        {state["search_used_a"]}
+
         Answer A:
         {answer_a.answer}
 
@@ -27,6 +30,9 @@ def judge(state:DebateState):
 
         Hallucination Risk A:
         {critique_b.hallucination_risk}/5
+
+        Search Used B:
+        {state["search_used_b"]}
 
         Answer B:
         {answer_b.answer}
@@ -46,6 +52,7 @@ def judge(state:DebateState):
         Choose the better answer.
 
         Prioritize:
+        0. Winner must be either A or B (don't choose a tie)
         1. Correctness
         2. Evidence support
         3. Lower hallucination risk
