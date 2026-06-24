@@ -13,6 +13,7 @@ class CritiqueResponse(BaseModel):
 
 class SearchDecision(BaseModel):
     need_search: bool = Field(description="Whether a search is needed")
+    confidence: float = Field(description="Confidence score between 0 and 1")
     search_query: str = Field(description="The query to use for searching")
     reason: str = Field(description="The reason for the search decision")
 

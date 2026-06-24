@@ -24,12 +24,19 @@ def get_evidence(question: str):
         Return:
         need_search
         search_query
+        confidence
         reason
         """
     )
 
-    if not decision.need_search:
+    should_search = (
+        decision.need_search
+        or decision.confidence < 0.6
+    )
+
+    if not should_search:
         return "", decision
+
 
     try:
         evidence = search_web(
