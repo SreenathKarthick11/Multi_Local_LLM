@@ -9,32 +9,38 @@ def debater_b(state: DebateState):
     evidence, decision = get_evidence(state["question"]+" different viewpoints")
 
     prompt = f"""
-            You are Debater B.
+        You are Debater B.
 
-            Consider alternative interpretations.
+        Your role is to challenge common assumptions.
 
-            Question:
-            {state["question"]}
+        Consider:
+        - alternative explanations
+        - edge cases
+        - hidden assumptions
+        - counterarguments
 
-            Search Used:
-            {decision.need_search}
+        Question:
+        {state["question"]}
 
-            Search Results:
-            {evidence}
+        Web Search Used:
+        {decision.need_search}
 
-            Answer the question using the search results.
+        Evidence:
+        {evidence}
 
-            Return:
-            - answer
-            - confidence
-            - reasoning
-            """
+        Return:
+        - answer
+        - confidence
+        - reasoning
+
+        Be concise but critical.
+        """
 
     response = debate_llm.invoke(prompt)
 
     return {
         "history_b": [response],
-        "search_used_a": decision.need_search,
+        "search_used_b": decision.need_search,
         "evidence_bank_b": [evidence]
     }
 
@@ -44,34 +50,39 @@ def critique_b(state: DebateState):
     opponent_answer=state["history_a"][-1]
 
     prompt = f"""
-            You are Debater B.
+        You are Debater B.
 
-            Question:
-            {state["question"]}
+        Question:
+        {state["question"]}
 
-            Your Recent Evidence:
-            {state["evidence_bank_b"][-1]}
+        Your Recent Evidence:
+        {state["evidence_bank_b"][-1]}
 
-            Your Answer:
-            {my_answer.answer}
+        Your latest answer:
+        {my_answer.answer}
 
-            Opponent Answer:
-            {opponent_answer.answer}
+        Opponent answer:
+        {opponent_answer.answer}
 
-            Opponent Reasoning:
-            {opponent_answer.reasoning}
+        Opponent reasoning:
+        {opponent_answer.reasoning}
 
-            Analyze the opponent's answer.
+        Analyze ONLY the opponent answer.
 
-            Identify:
+        Find:
 
-            1. Weaknesses in reasoning.
-            2. Statements that may be hallucinated,
-            fabricated, or unsupported.
-            3. Overall hallucination risk from 1 to 5.
+        1. Factual mistakes.
+        2. Unsupported assumptions.
+        3. Weak reasoning.
+        4. Possible hallucinations.
 
-            Be concise.
-            """
+        Do not repeat the answer.
+
+        Return:
+        - weaknesses
+        - hallucination_risk (1-5)
+        - suspected_hallucinations
+        """
 
     response = critique_llm.invoke(prompt)
 
@@ -87,24 +98,35 @@ def revise_b(state:DebateState):
     prompt = f"""
         You are Debater B.
 
-        Original Answer:
+        Question:
+        {state["question"]}
+
+        Your previous answer:
         {latest.answer}
 
-        Original Reasoning:
+        Your reasoning:
         {latest.reasoning}
 
-        Opponent Weaknesses:
+        Critique received:
         {chr(10).join("- " + w for w in critique.weaknesses)}
 
-        Suspected Hallucinations:
+        Possible hallucinations:
         {chr(10).join("- " + h for h in critique.suspected_hallucinations)}
 
-        Hallucination Risk:
+        Hallucination risk:
         {critique.hallucination_risk}/5
 
-        Revise your answer if necessary.
+        Previous debate rounds:
+        {len(state["history_b"])}
 
-        Pay special attention to suspected hallucinations.
+        Task:
+
+        - Keep correct parts.
+        - Fix weaknesses if valid.
+        - Remove unsupported claims.
+        - Increase factual accuracy.
+        - Do not change the answer unless justified.
+
         Return:
         - answer
         - confidence
