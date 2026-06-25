@@ -9,23 +9,33 @@ def get_evidence(question: str):
         Question:
         {question}
 
-        Decide whether web search is necessary.
+        Determine whether web search would significantly improve answer quality.
 
-        Search only if:
-        - factual information is needed
-        - current information is needed
-        - uncertainty is high
+        Search is REQUIRED for:
 
-        Do not search for:
-        - simple math
-        - common definitions
-        - trivial reasoning
+        - current events
+        - dates
+        - statistics
+        - people
+        - companies
+        - scientific facts
+        - historical facts
+        - geographic facts
+
+        Search is NOT required for:
+
+        - simple arithmetic
+        - basic definitions
+        - common knowledge
+        - logic puzzles
+        - reasoning tasks
 
         Return:
-        need_search
-        search_query
-        confidence
-        reason
+
+        - need_search
+        - confidence
+        - search_query
+        - reason
         """
     )
 
