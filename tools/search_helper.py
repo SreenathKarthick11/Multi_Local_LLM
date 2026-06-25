@@ -41,7 +41,7 @@ def get_evidence(question: str):
 
     should_search = (
         decision.need_search
-        or decision.confidence < 0.6
+        or decision.confidence < 0.3
     )
 
     if not should_search:

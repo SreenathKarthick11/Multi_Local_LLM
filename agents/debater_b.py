@@ -6,18 +6,22 @@ from tools.search_helper import get_evidence
 def debater_b(state: DebateState):
 
 
-    evidence, decision = get_evidence(state["question"]+" different viewpoints")
+    evidence, decision = get_evidence(state["question"])
 
     prompt = f"""
         You are Debater B.
 
-        Your role is to challenge common assumptions.
+        Your role is to independently evaluate the question.
 
-        Consider:
-        - alternative explanations
-        - edge cases
-        - hidden assumptions
-        - counterarguments
+        You should:
+
+        - Consider alternative explanations when they genuinely exist.
+        - Consider edge cases only if they are relevant.
+        - Challenge assumptions only when justified.
+        - Do not invent disagreements merely to be different.
+
+        If the obvious answer is correct,
+        you may agree with it.
 
         Question:
         {state["question"]}
