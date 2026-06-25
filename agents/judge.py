@@ -10,61 +10,71 @@ def judge(state:DebateState):
     critique_b = state["critique_b"]
 
     prompt = f"""
+        You are an impartial debate judge.
+
         Question:
         {state["question"]}
 
-        Search Used A:
-        {state["search_used_a"]}
+        =====================
+        DEBATER A
+        =====================
 
-        Answer A:
+        Answer:
         {answer_a.answer}
 
-        Confidence A:
+        Confidence:
         {answer_a.confidence}
 
-        Reasoning A:
+        Reasoning:
         {answer_a.reasoning}
 
-        Critique of A:
+        Critique:
         {critique_b.weaknesses}
 
-        Hallucination Risk A:
+        Hallucination Risk:
         {critique_b.hallucination_risk}/5
 
-        Search Used B:
-        {state["search_used_b"]}
+        Evidence:
+        {chr(10).join(state["evidence_bank_a"][-3:])}
 
-        Answer B:
+        =====================
+        DEBATER B
+        =====================
+
+        Answer:
         {answer_b.answer}
 
-        Confidence B:
+        Confidence:
         {answer_b.confidence}
 
-        Reasoning B:
+        Reasoning:
         {answer_b.reasoning}
 
-        Critique of B:
+        Critique:
         {critique_a.weaknesses}
 
-        Hallucination Risk B:
+        Hallucination Risk:
         {critique_a.hallucination_risk}/5
 
-        Evidence Collected By A:
-        {chr(10).join(state["evidence_bank_a"])}
+        Evidence:
+        {chr(10).join(state["evidence_bank_b"][-3:])}
 
-        Evidence Collected By B:
-        {chr(10).join(state["evidence_bank_b"])}
+        Choose exactly one winner.
 
-        Choose the better answer.
+        Evaluation order:
 
-        Prioritize:
-        0. Winner must be either A or B (don't choose a tie)
-        1. Correctness
+        1. Factual correctness
         2. Evidence support
-        3. Lower hallucination risk
-        4. Strong reasoning
+        3. Logical reasoning
+        4. Hallucination avoidance
+        5. Confidence calibration
 
-        Explain briefly.
+        Do NOT choose a tie.
+
+        Return:
+        - winner (A or B)
+        - confidence
+        - reasoning
         """
 
     response = judge_llm.invoke(prompt)
