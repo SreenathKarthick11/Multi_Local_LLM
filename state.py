@@ -22,3 +22,5 @@ class DebateState(TypedDict):
     history_b: Annotated[list[AgentResponse],add]
 
     judge_result: JudgeResponse | None
+
+    stop_reason: str | None
