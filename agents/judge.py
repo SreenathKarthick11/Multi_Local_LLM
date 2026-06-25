@@ -59,6 +59,9 @@ def judge(state:DebateState):
         Evidence:
         {chr(10).join(state["evidence_bank_b"][-3:])}
 
+        Debate stopped because:
+        {state["stop_reason"]}
+
         Choose exactly one winner.
 
         Evaluation order:
