@@ -1,29 +1,39 @@
 from llm import evaluation_llm
 
 
-def evaluate_answer(
-    question: str,
-    expected: str,
-    predicted: str
-):
-
+def evaluate_answer(question: str,expected: str,predicted: str):
+    
     prompt = f"""
-    Question:
-    {question}
+        You are evaluating an AI answer.
 
-    Expected Answer:
-    {expected}
+        Question:
+        {question}
 
-    Predicted Answer:
-    {predicted}
+        Expected Answer:
+        {expected}
 
-    Determine:
+        Predicted Answer:
+        {predicted}
 
-    1. Is the predicted answer correct?
-    2. Give a quality score from 1-10.
-    3. Explain briefly.
+        Judge semantic correctness.
 
-    Be tolerant of equivalent wording.
-    """
+        The answer is correct if:
+
+        - meaning matches
+        - wording differs but meaning is equivalent
+        - answer is more detailed but still correct
+
+        The answer is incorrect if:
+
+        - key facts are wrong
+        - important information is missing
+        - answer contradicts expected answer
+
+        Return:
+
+        - correct
+        - score (1-10)
+        - reasoning
+        """
 
     return evaluation_llm.invoke(prompt)
