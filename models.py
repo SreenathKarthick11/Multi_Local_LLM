@@ -26,3 +26,15 @@ class EvaluationResponse(BaseModel):
     correct: bool = Field(description="Whether the final answer is correct")
     score: int = Field(description="Quality score from 1-10")
     reasoning: str = Field(description="Reasoning for the evaluation")
+
+class ToolDecision(BaseModel):
+    use_tool: bool = Field(description="Whether another tool should be used.")
+    tool_name: str = Field(description="calculator, python, retrieval, none")
+    tool_input: str = Field(description="Input for the tool.")
+    confidence: float = Field(description="Confidence score between 0 and 1")
+    reason: str = Field(description="The reason for the tool decision")
+
+class ToolResult(BaseModel):
+    tool_name: str = Field(description="calculator, python, retrieval, none")
+    tool_input: str = Field(description="Input for the tool.")
+    output: str = Field(description="Output from the tool.")
