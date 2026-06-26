@@ -2,7 +2,7 @@ from state import DebateState
 
 
 def answers_similar(a: str, b: str):
-    
+
     a = a.lower().strip()
     b = b.lower().strip()
 
@@ -39,7 +39,7 @@ def should_stop(state: DebateState):
         and
         critique_b.hallucination_risk <= 2
         and
-        round_number >= 2
+        round_number >= 1
     ):
         return {
             "stop": True,
