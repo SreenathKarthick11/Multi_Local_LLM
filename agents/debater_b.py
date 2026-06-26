@@ -1,12 +1,13 @@
 from llm import debate_llm,critique_llm
 from state import DebateState
-from tools.search import search_web
 from tools.search_helper import get_evidence
+from tools.tool_helper import get_tool
 
 def debater_b(state: DebateState):
 
 
     evidence, decision = get_evidence(state["question"])
+    tool = get_tool(state["question"])
 
     prompt = f"""
         You are Debater B.
@@ -29,7 +30,10 @@ def debater_b(state: DebateState):
         Web Search Used:
         {decision.need_search}
 
-        Evidence:
+        Tool Results:
+        {tool.output if tool else "None"}
+
+        Search Results:
         {evidence}
 
         Return:
@@ -45,6 +49,7 @@ def debater_b(state: DebateState):
     return {
         "history_b": [response],
         "search_used_b": decision.need_search,
+        "tool_bank_b": [tool] if tool else [],
         "evidence_bank_b": [evidence]
     }
 
