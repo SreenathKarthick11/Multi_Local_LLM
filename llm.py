@@ -1,5 +1,5 @@
 from langchain_ollama import ChatOllama
-from models import AgentResponse, CritiqueResponse, JudgeResponse, SearchDecision, EvaluationResponse
+from models import AgentResponse, CritiqueResponse, JudgeResponse, SearchDecision, EvaluationResponse, ToolDecision
 
 # Base debate model
 debate_base_llm = ChatOllama(
@@ -35,3 +35,8 @@ search_llm = ChatOllama(
     model="qwen2.5:1.5b",
     temperature=0
 ).with_structured_output(SearchDecision)
+
+tool_llm = ChatOllama(
+    model="qwen2.5:1.5b",
+    temperature=0
+).with_structured_output(ToolDecision)
