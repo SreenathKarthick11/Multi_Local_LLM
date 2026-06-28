@@ -4,3 +4,8 @@
 __pycache__/
 *.pyc
 results/
+
+# rag related folders
+documents/
+vector_db/
+
