@@ -1,6 +1,6 @@
 from operator import add,or_
 from typing import TypedDict,Annotated
-from models import AgentResponse, CritiqueResponse,JudgeResponse, ToolResult
+from models import AgentResponse, CritiqueResponse,JudgeResponse, ResourceContext
 
 
 class DebateState(TypedDict):
@@ -12,11 +12,11 @@ class DebateState(TypedDict):
     search_used_a: Annotated[bool,or_]
     search_used_b: Annotated[bool,or_]
 
-    tool_bank_a: Annotated[list[ToolResult], add]
-    tool_bank_b: Annotated[list[ToolResult], add]
+    rag_used_a : Annotated[bool,or_]
+    rag_used_b : Annotated[bool,or_]
 
-    evidence_bank_a: Annotated[list[str], add]
-    evidence_bank_b: Annotated[list[str], add]
+    resource_bank_a: Annotated[list[ResourceContext], add]
+    resource_bank_b: Annotated[list[ResourceContext], add]
 
     critique_a: CritiqueResponse | None
     critique_b: CritiqueResponse | None
