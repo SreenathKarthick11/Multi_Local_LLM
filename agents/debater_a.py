@@ -4,7 +4,7 @@ from tools.resource_manager import get_resources,format_resource
 
 def debater_a(state: DebateState):
 
-    context,descision,retrive_descision = get_resources(state["question"])
+    context,route = get_resources(state["question"])
 
     prompt = f"""
         You are Debater A.
@@ -23,7 +23,7 @@ def debater_a(state: DebateState):
         {state["question"]}
 
         Web Search Used:
-        {descision.need_search}
+        {route.use_web}
 
         Tool Results:
         {context.tools}
@@ -32,7 +32,7 @@ def debater_a(state: DebateState):
         {context.web_evidence}
 
         Retrive from Documents:
-        {retrive_descision.use_rag}
+        {route.use_rag}
 
         Retrieved Documents:
         {context.rag_evidence}
@@ -48,8 +48,8 @@ def debater_a(state: DebateState):
     response = debate_llm.invoke(prompt)
 
     return {
-        "search_used_a": descision.need_search,
-        "rag_used_a" : retrive_descision.use_rag,
+        "search_used_a": route.use_web,
+        "rag_used_a" : route.use_rag,
         "resource_bank_a" : [context],
         "history_a":[response]
     }
