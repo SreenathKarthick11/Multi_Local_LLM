@@ -1,12 +1,10 @@
 from llm import debate_llm,critique_llm
 from state import DebateState
-from tools.search_helper import get_evidence
-from tools.tool_helper import get_tool
+from tools.resource_manager import get_resources,format_resource
 
 def debater_a(state: DebateState):
 
-    evidence, decision = get_evidence(state["question"])
-    tool = get_tool(state["question"])
+    context,descision,retrive_descision = get_resources(state["question"])
 
     prompt = f"""
         You are Debater A.
@@ -16,18 +14,28 @@ def debater_a(state: DebateState):
         - Use evidence when available.
         - Avoid speculation.
         - If evidence is insufficient, explicitly state uncertainty.
+        -   When retrieved documents are available,
+            base your answer primarily on them.
+            Quote or summarize them directly.
+            Do not ignore retrieved evidence.
 
         Question:
         {state["question"]}
 
         Web Search Used:
-        {decision.need_search}
+        {descision.need_search}
 
         Tool Results:
-        {tool.output if tool else "None"}
+        {context.tools}
 
-        Search Results:
-        {evidence}
+        Web Search Results:
+        {context.web_evidence}
+
+        Retrive from Documents:
+        {retrive_descision.use_rag}
+
+        Retrieved Documents:
+        {context.rag_evidence}
 
         Return:
         - answer
@@ -40,9 +48,9 @@ def debater_a(state: DebateState):
     response = debate_llm.invoke(prompt)
 
     return {
-        "evidence_bank_a": [evidence],
-        "search_used_a": decision.need_search,
-        "tool_bank_a": [tool] if tool else [],
+        "search_used_a": descision.need_search,
+        "rag_used_a" : retrive_descision.use_rag,
+        "resource_bank_a" : [context],
         "history_a":[response]
     }
 
@@ -58,7 +66,7 @@ def critique_a(state: DebateState):
         {state["question"]}
 
         Your Recent Evidence:
-        {state["evidence_bank_a"][-1]}
+        {format_resource(state["resource_bank_a"][-1])}
 
         Your latest answer:
         {my_answer.answer}

@@ -1,13 +1,10 @@
 from llm import debate_llm,critique_llm
 from state import DebateState
-from tools.search_helper import get_evidence
-from tools.tool_helper import get_tool
+from tools.resource_manager import get_resources,format_resource
 
 def debater_b(state: DebateState):
 
-
-    evidence, decision = get_evidence(state["question"])
-    tool = get_tool(state["question"])
+    context,descision,retrive_descision = get_resources(state["question"])
 
     prompt = f"""
         You are Debater B.
@@ -20,6 +17,10 @@ def debater_b(state: DebateState):
         - Consider edge cases only if they are relevant.
         - Challenge assumptions only when justified.
         - Do not invent disagreements merely to be different.
+        - When retrieved documents are available,
+            base your answer primarily on them.
+            Quote or summarize them directly.
+            Do not ignore retrieved evidence.
 
         If the obvious answer is correct,
         you may agree with it.
@@ -28,13 +29,19 @@ def debater_b(state: DebateState):
         {state["question"]}
 
         Web Search Used:
-        {decision.need_search}
+        {descision.need_search}
 
         Tool Results:
-        {tool.output if tool else "None"}
+        {context.tools}
 
-        Search Results:
-        {evidence}
+        Web Search Results:
+        {context.web_evidence}
+
+        Retrive from Documents:
+        {retrive_descision.use_rag}
+
+        Retrieved Documents:
+        {context.rag_evidence}
 
         Return:
         - answer
@@ -47,10 +54,10 @@ def debater_b(state: DebateState):
     response = debate_llm.invoke(prompt)
 
     return {
-        "history_b": [response],
-        "search_used_b": decision.need_search,
-        "tool_bank_b": [tool] if tool else [],
-        "evidence_bank_b": [evidence]
+        "search_used_b": descision.need_search,
+        "resource_bank_b" : [context],
+        "rag_used_a" : retrive_descision.use_rag,
+        "history_b":[response]
     }
 
 def critique_b(state: DebateState):
@@ -65,7 +72,7 @@ def critique_b(state: DebateState):
         {state["question"]}
 
         Your Recent Evidence:
-        {state["evidence_bank_b"][-1]}
+        {format_resource(state["resource_bank_b"][-1])}
 
         Your latest answer:
         {my_answer.answer}
