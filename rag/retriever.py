@@ -3,7 +3,7 @@ from langchain_core.documents import Document
 from .vector_store import get_vector_store
 
 
-def retrieve(query: str, k: int = 4) -> list[Document]:
+def retrieve(query: str, k: int = 3) -> list[Document]:
 
     db = get_vector_store()
 
@@ -13,7 +13,7 @@ def retrieve(query: str, k: int = 4) -> list[Document]:
     )
 
 
-def retrieve_text(query: str, k: int = 4) -> str:
+def retrieve_text(query: str, k: int = 3) -> str:
 
     docs = retrieve(query, k)
 
