@@ -25,6 +25,14 @@ Your job is NOT to answer the question.
 
 Your ONLY job is to decide whether a tool should be used.
 
+If the question is about documents,
+resumes,
+papers,
+facts,
+retrieval,
+
+DO NOT use calculator.
+
 Use the calculator whenever the question involves ANY numerical computation.
 
 Examples that MUST use calculator:

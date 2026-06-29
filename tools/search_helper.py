@@ -11,6 +11,11 @@ def get_evidence(question: str):
 
         Determine whether web search would significantly improve answer quality.
 
+        If the answer can be obtained completely
+        from local retrieved documents,
+
+        DO NOT search the web.
+
         Search is REQUIRED for:
 
         - current events
