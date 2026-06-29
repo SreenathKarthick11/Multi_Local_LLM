@@ -38,3 +38,14 @@ class ToolResult(BaseModel):
     tool_name: str = Field(description="calculator, python, retrieval, none")
     tool_input: str = Field(description="Input for the tool.")
     output: str = Field(description="Output from the tool.")
+
+class ResourceContext(BaseModel):
+    web_evidence: str = Field(default="")
+    rag_evidence: str = Field(default="")
+    tools: list[ToolResult] = Field(default_factory=list)
+
+class ResourceDecision(BaseModel):
+    use_rag: bool = Field(description="Whether retrieval from the vector database is useful.")
+    retrieval_query: str = Field(description="Query to search the vector database.")
+    confidence: float = Field(description="Confidence between 0 and 1.")
+    reason: str = Field(description="Reason for the decision.")
