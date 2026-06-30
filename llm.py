@@ -27,12 +27,12 @@ judge_base_llm = ChatOllama(
 judge_llm = judge_base_llm.with_structured_output(JudgeResponse)
 
 evaluation_llm = ChatOllama(
-    model="qwen2.5:3b",
+    model="qwen2.5:1.5b",
     temperature=0
 ).with_structured_output(EvaluationResponse)
 
 
 resource_router_llm = ChatOllama(
-    model="qwen2.5:1.5b",
+    model="qwen2.5:3b",
     temperature=0
 ).with_structured_output(ResourceRoute)
