@@ -1,149 +1,147 @@
 from rich.layout import Layout
 from rich.panel import Panel
-from rich.align import Align
+from rich.console import Group
+from rich.text import Text
 
-
-def make_placeholder(title: str):
-    return Panel(
-        Align.center(
-            "[grey62]Waiting...[/grey62]",
-            vertical="middle",
-        ),
-        title=title,
-        border_style="grey42",
-    )
+from ui.widgets import (
+    status,
+    confidence,
+    debate_progress,
+)
 
 
 def build_layout():
 
     layout = Layout(name="root")
 
-    # -------------------------------------------------------
-    # Entire screen
-    # -------------------------------------------------------
-
     layout.split_column(
-
         Layout(name="header", size=3),
-
         Layout(name="body"),
-
         Layout(name="footer", size=1),
-
     )
-
-    # -------------------------------------------------------
-    # Body
-    # -------------------------------------------------------
 
     layout["body"].split_column(
-
         Layout(name="top", ratio=3),
-
         Layout(name="middle", ratio=2),
-
         Layout(name="bottom", ratio=1),
-
     )
-
-    # -------------------------------------------------------
-    # TOP
-    #
-    # Resources | Debate
-    # -------------------------------------------------------
 
     layout["top"].split_row(
-
-        Layout(name="resources", ratio=1),
-
+        Layout(name="router", ratio=1),
         Layout(name="debate", ratio=2),
-
     )
-
-    # -------------------------------------------------------
-    # MIDDLE
-    #
-    # Critique A | Critique B
-    # -------------------------------------------------------
 
     layout["middle"].split_row(
-
         Layout(name="critique_a"),
-
         Layout(name="critique_b"),
-
     )
-
-    # -------------------------------------------------------
-    # Bottom
-    #
-    # Judge | Stats
-    # -------------------------------------------------------
 
     layout["bottom"].split_row(
-
         Layout(name="judge"),
-
-        Layout(name="stats"),
-
+        Layout(name="runtime"),
     )
 
-    # -------------------------------------------------------
-    # Header
-    # -------------------------------------------------------
+    return layout
+
+
+def demo_layout():
+
+    layout = build_layout()
 
     layout["header"].update(
-
         Panel(
-            Align.center(
-                "[bold cyan]Local LLM Multi-Agent Debate[/bold cyan]\n"
-                "[grey62]Routing • RAG • Web • Tools • Debate[/grey62]"
+            Text(
+                "Local LLM Multi-Agent Debate",
+                justify="center",
+                style="title",
+            )
+        )
+    )
+
+    layout["router"].update(
+        Panel(
+            Group(
+                status("RAG Retrieval", "success"),
+                status("Web Search", "failed"),
+                status("Python Tool", "failed"),
+                Text(""),
+                Text(
+                    "Retrieved 3 document chunks",
+                    style="green",
+                ),
             ),
-            border_style="cyan",
+            title="Resources",
+            border_style="green",
         )
-
-    )
-
-    # -------------------------------------------------------
-    # Footer
-    # -------------------------------------------------------
-
-    layout["footer"].update(
-
-        Align.center(
-            "[grey62]"
-            "Press Ctrl+C to exit"
-            "[/grey62]"
-        )
-
-    )
-
-    # -------------------------------------------------------
-    # Placeholders
-    # -------------------------------------------------------
-
-    layout["resources"].update(
-        make_placeholder("Resources")
     )
 
     layout["debate"].update(
-        make_placeholder("Debate")
+        Panel(
+            Group(
+                Text("Agent A", style="agent_a"),
+                Text("Rome is the capital of Italy."),
+                Text(""),
+                Text("Agent B", style="agent_b"),
+                Text("I agree. Rome is correct."),
+            ),
+            title="Debate",
+            border_style="cyan",
+        )
     )
 
     layout["critique_a"].update(
-        make_placeholder("Critique A")
+        Panel(
+            Group(
+                Text("✓ No hallucinations", style="green"),
+                Text("✓ Good reasoning", style="green"),
+                Text("! Could provide citations", style="yellow"),
+            ),
+            title="Critique A",
+            border_style="blue",
+        )
     )
 
     layout["critique_b"].update(
-        make_placeholder("Critique B")
+        Panel(
+            Group(
+                Text("✓ No hallucinations", style="green"),
+                Text("✓ Good reasoning", style="green"),
+                Text("! Could provide citations", style="yellow"),
+            ),
+            title="Critique B",
+            border_style="magenta",
+        )
     )
 
     layout["judge"].update(
-        make_placeholder("Judge")
+        Panel(
+            Group(
+                Text(
+                    "Winner: Agent A",
+                    style="bold green",
+                ),
+                Text(""),
+                confidence(0.92),
+            ),
+            title="Judge",
+            border_style="red",
+        )
     )
 
-    layout["stats"].update(
-        make_placeholder("Stats")
+    layout["runtime"].update(
+        Panel(
+            debate_progress(2, 3),
+            title="Runtime",
+            border_style="cyan",
+        )
+    )
+
+    layout["footer"].update(
+        Text(
+            "Press Ctrl+C to exit",
+            justify="center",
+            style="dim",
+        )
     )
 
     return layout
