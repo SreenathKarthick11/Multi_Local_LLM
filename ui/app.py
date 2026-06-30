@@ -3,27 +3,36 @@ import time
 from rich.live import Live
 
 from ui.console import console
-from ui.layout import demo_layout
+from ui.renderer import Renderer
 
 
 def main():
 
-    layout = demo_layout()
+    renderer = Renderer()
 
     with Live(
-        layout,
+        renderer.get_layout(),
         console=console,
-        refresh_per_second=10,
+        refresh_per_second=20,
         screen=True,
     ):
 
         while True:
-            time.sleep(0.1)
+
+            renderer.process_events()
+
+            time.sleep(0.05)
 
 
 if __name__ == "__main__":
+
     try:
         main()
+
     except KeyboardInterrupt:
+
         console.clear()
-        console.print("[green]Exited.[/green]")
+
+        console.print(
+            "[bold green]Goodbye![/bold green]"
+        )

@@ -26,6 +26,7 @@ from ui.panels import (
     render_runtime,
 )
 
+from ui.event_bus import event_bus
 
 class Renderer:
 
@@ -164,6 +165,14 @@ class Renderer:
         self.state.runtime.max_rounds = event.max_rounds
         self.state.runtime.elapsed_seconds = event.elapsed_seconds
         self.state.runtime.stop_reason = event.stop_reason
+
+    def process_events(self):
+
+        events = event_bus.poll()
+
+        for event in events:
+
+            self.update(event)
 
     # -----------------------------------------------------
     # Helpers
