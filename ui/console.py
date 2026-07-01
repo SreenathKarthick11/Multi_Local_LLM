@@ -3,5 +3,5 @@ from .theme import theme
 
 console = Console(
     theme=theme,
-    record=False,
+    # record=False,
 )

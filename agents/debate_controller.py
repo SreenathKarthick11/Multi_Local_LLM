@@ -2,6 +2,10 @@
 
 from tools.stopping import should_stop
 
+from ui.emitter import emit
+from ui.events import RuntimeEvent
+from ui.clock import elapsed
+
 # barrier node function
 def pass_through(state):
     return {}
@@ -9,6 +13,14 @@ def pass_through(state):
 def debate_controller(state):
 
     decision = should_stop(state)
+
+    emit(RuntimeEvent(
+        round_number=state["round_number"],
+        max_rounds=state["max_rounds"],
+        elapsed_seconds=elapsed(),
+        stop_reason=decision["reason"] or "",
+    ))
+    
     return {
         "round_number":
             state["round_number"] + 1,

@@ -3,6 +3,9 @@ from state import DebateState
 from tools.resource_manager import format_resources
 
 
+from ui.emitter import emit
+from ui.events import JudgeEvent
+
 def judge(state: DebateState):
 
     answer_a = state["history_a"][-1]
@@ -113,6 +116,12 @@ def judge(state: DebateState):
         """
 
     response = judge_llm.invoke(prompt)
+
+    emit(JudgeEvent(
+        winner=response.winner,
+        reasoning=response.reasoning,
+        confidence=response.confidence,
+    ))
 
     return {
         "judge_result": response

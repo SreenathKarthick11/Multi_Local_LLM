@@ -7,6 +7,8 @@ from tools.search import search_web
 from rag.retriever import retrieve_text
 from tools.python_tool import python_tool
 
+from ui.emitter import emit
+from ui.events import RouterEvent, ResourceEvent
 
 def build_context(
     web: str,
@@ -66,11 +68,9 @@ def _run_tool(route):
 
 def get_resources(question: str):
 
-    # Only one LLM call
     route = route_resources(question)
 
     with ThreadPoolExecutor(max_workers=3) as executor:
-
         web_future = executor.submit(_run_web, route)
         rag_future = executor.submit(_run_rag, route)
         tool_future = executor.submit(_run_tool, route)
@@ -84,6 +84,21 @@ def get_resources(question: str):
         rag=rag,
         tools=[tool] if tool else [],
     )
+
+    emit(RouterEvent(
+        status="Routed",
+        use_web=route.use_web,
+        use_rag=route.use_rag,
+        use_python=bool(route.use_tool and route.tool_name == "python"),
+        confidence=route.confidence,
+        reason=route.reason,
+    ))
+
+    emit(ResourceEvent(
+        web=context.web_evidence or "",
+        rag=context.rag_evidence or "",
+        tools="\n".join(f"{t.tool_name}: {t.output}" for t in context.tools),
+    ))
 
     return context, route
 

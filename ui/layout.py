@@ -28,6 +28,7 @@ def build_layout():
 
     layout["top"].split_row(
         Layout(name="router", ratio=1),
+        Layout(name="resources", ratio=1),
         Layout(name="debate", ratio=2),
     )
 

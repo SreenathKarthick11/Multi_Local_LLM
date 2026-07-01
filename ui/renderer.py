@@ -1,7 +1,8 @@
 # renderer.py
 
 from dataclasses import asdict
-
+from rich.panel import Panel
+from rich.text import Text
 from ui.state import UIState
 
 from ui.events import (
@@ -73,32 +74,26 @@ class Renderer:
 
     def refresh(self):
 
-        self.layout["router"].update(
-            render_router(self.state)
+        self.layout["header"].update(
+            Panel(
+                Text(
+                    self.state.question or "Local LLM Multi-Agent Debate",
+                    justify="center",
+                    style="title",
+                )
+            )
         )
 
-        self.layout["resources"].update(
-            render_resources(self.state)
-        )
+        self.layout["router"].update(render_router(self.state))
+        self.layout["resources"].update(render_resources(self.state))
+        self.layout["debate"].update(render_debate(self.state))
+        self.layout["critique_a"].update(render_critique_a(self.state))
+        self.layout["critique_b"].update(render_critique_b(self.state))
+        self.layout["judge"].update(render_judge(self.state))
+        self.layout["runtime"].update(render_runtime(self.state))
 
-        self.layout["debate"].update(
-            render_debate(self.state)
-        )
-
-        self.layout["critique_a"].update(
-            render_critique_a(self.state)
-        )
-
-        self.layout["critique_b"].update(
-            render_critique_b(self.state)
-        )
-
-        self.layout["judge"].update(
-            render_judge(self.state)
-        )
-
-        self.layout["runtime"].update(
-            render_runtime(self.state)
+        self.layout["footer"].update(
+            Text("Press Ctrl+C to exit", justify="center", style="dim")
         )
 
     # -----------------------------------------------------

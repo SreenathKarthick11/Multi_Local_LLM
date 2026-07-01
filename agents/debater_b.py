@@ -2,7 +2,13 @@ from llm import debate_llm,critique_llm
 from state import DebateState
 from tools.resource_manager import get_resources,format_resource
 
+from ui.emitter import emit
+from ui.events import AgentEvent, CritiqueEvent
+
 def debater_b(state: DebateState):
+
+    emit(AgentEvent(agent="B", status="Thinking...", answer="", reasoning="", confidence=0.0))
+
 
     context,route = get_resources(state["question"])
 
@@ -53,6 +59,14 @@ def debater_b(state: DebateState):
 
     response = debate_llm.invoke(prompt)
 
+    emit(AgentEvent(
+        agent="B",
+        status="Answered",
+        answer=response.answer,
+        reasoning=response.reasoning,
+        confidence=response.confidence,
+    ))
+
     return {
         "search_used_b": route.use_web,
         "resource_bank_b" : [context],
@@ -102,6 +116,13 @@ def critique_b(state: DebateState):
 
     response = critique_llm.invoke(prompt)
 
+    emit(CritiqueEvent(
+        agent="B",
+        weaknesses=response.weaknesses,
+        hallucination_risk=response.hallucination_risk,
+        hallucinations=response.suspected_hallucinations,
+    ))
+
     return {
         "critique_b": response
     }
@@ -110,6 +131,9 @@ def revise_b(state:DebateState):
 
     critique=state["critique_a"]
     latest=state["history_b"][-1]
+
+    emit(AgentEvent(agent="B", status="Revising...", answer=state["history_b"][-1].answer,
+                     reasoning=state["history_b"][-1].reasoning, confidence=state["history_b"][-1].confidence))
 
     prompt = f"""
         You are Debater B.
@@ -150,6 +174,14 @@ def revise_b(state:DebateState):
         """
 
     response = debate_llm.invoke(prompt)
+
+    emit(AgentEvent(
+        agent="B",
+        status="Revised",
+        answer=response.answer,
+        reasoning=response.reasoning,
+        confidence=response.confidence,
+    ))
 
     return {
         "history_b":[response]
