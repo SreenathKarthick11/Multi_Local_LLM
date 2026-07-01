@@ -10,7 +10,7 @@ def status(text: str, state: str = "running") -> Text:
     """
 
     icons = {
-        "running": "⏳",
+        "running": "...",
         "success": "✓",
         "failed": "✗",
         "waiting": "•",
