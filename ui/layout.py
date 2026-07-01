@@ -11,7 +11,6 @@ from ui.widgets import (
 
 
 def build_layout():
-
     layout = Layout(name="root")
 
     layout.split_column(
@@ -30,6 +29,11 @@ def build_layout():
         Layout(name="router", ratio=1),
         Layout(name="resources", ratio=1),
         Layout(name="debate", ratio=2),
+    )
+
+    layout["debate"].split_row(
+        Layout(name="agent_a"),
+        Layout(name="agent_b"),
     )
 
     layout["middle"].split_row(

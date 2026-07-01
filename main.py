@@ -149,24 +149,35 @@ def main():
             # -----------------------------------------------
             emit(QuestionEvent(question=question))
             start_clock()
+            renderer.scroll.reset_all()
             renderer.refresh()
 
             initial_state = build_initial_state(question)
 
-            worker = threading.Thread(
-                target=run_debate,
-                args=(initial_state,),
-                daemon=True,
-            )
+            worker = threading.Thread(target=run_debate, args=(initial_state,), daemon=True)
             worker.start()
 
             while worker.is_alive():
                 renderer.process_events()
-                time.sleep(0.05)
+                while True:
+                    key = read_key()
+                    if key is None:
+                        break
+                    renderer.handle_input(key)
+                time.sleep(0.03)
 
             for _ in range(20):
                 renderer.process_events()
                 time.sleep(0.05)
+
+            while True:
+                renderer.process_events()
+                while True:
+                    key = read_key()
+                    if key is None:
+                        break
+                    renderer.handle_input(key)
+                time.sleep(0.03)
 
             layout["footer"].update(
                 Text(
