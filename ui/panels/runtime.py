@@ -43,6 +43,6 @@ def render_runtime(state: UIState):
 
         title="Runtime",
 
-        border_style="cyan",
+        border_style="color_runtime",
 
     )

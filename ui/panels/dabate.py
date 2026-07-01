@@ -51,13 +51,13 @@ def render_debate(state: UIState):
             build_agent(
                 "Agent A",
                 state.agent_a,
-                "blue",
+                "color_a",
             ),
 
             build_agent(
                 "Agent B",
                 state.agent_b,
-                "magenta",
+                "color_b",
             ),
 
         ],

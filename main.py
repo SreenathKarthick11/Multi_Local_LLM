@@ -43,12 +43,12 @@ def build_initial_state(question):
 def question_prompt_panel(buffer: str) -> Panel:
     return Panel(
         Text.assemble(
-            ("Question: ", "bold cyan"),
+            ("Question: ", "bold white"),
             (buffer, "white"),
-            ("▍", "bold cyan"),
+            ("▍", "bold white"),
         ),
         title="Type your question and press Enter",
-        border_style="cyan",
+        border_style="white",
     )
 
 

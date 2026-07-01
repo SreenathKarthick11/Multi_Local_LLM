@@ -1,6 +1,5 @@
 from rich.text import Text
 
-
 def status(text: str, state: str = "running") -> Text:
     """
     running
@@ -17,10 +16,10 @@ def status(text: str, state: str = "running") -> Text:
     }
 
     colors = {
-        "running": "yellow",
-        "success": "green",
-        "failed": "red",
-        "waiting": "grey70",
+        "running": "warning",
+        "success": "success",
+        "failed": "error",
+        "waiting": "dim",
     }
 
     return Text(

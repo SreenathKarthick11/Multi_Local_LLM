@@ -63,7 +63,7 @@ def render_critique_a(state):
 
         state.critique_a,
 
-        "blue",
+        "color_a",
 
     )
 
@@ -76,6 +76,6 @@ def render_critique_b(state):
 
         state.critique_b,
 
-        "magenta",
+        "color_b",
 
     )

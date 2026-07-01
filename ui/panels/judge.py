@@ -20,7 +20,7 @@ def render_judge(state: UIState):
 
                 f"Winner : {judge.winner}",
 
-                style="bold green",
+                style="bold success",
 
             ),
 
@@ -44,6 +44,6 @@ def render_judge(state: UIState):
 
         title="Judge",
 
-        border_style="red",
+        border_style="color_judge",
 
     )

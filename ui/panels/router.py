@@ -54,5 +54,5 @@ def render_router(state: UIState):
     return Panel(
         Group(*items),
         title="Router",
-        border_style="yellow",
+        border_style="color_router",
     )

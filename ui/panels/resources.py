@@ -46,6 +46,6 @@ def render_resources(state: UIState):
 
         title="Resources",
 
-        border_style="green",
+        border_style="color_resources",
 
     )

@@ -9,7 +9,7 @@ def confidence(score: float):
 
     label = Text(
         f"{score*100:.1f}% confidence",
-        style="bold cyan",
+        style="title",
     )
 
     bar = ProgressBar(
